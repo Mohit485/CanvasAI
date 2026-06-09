@@ -11,8 +11,12 @@ Built as a personal project to explore super-resolution models and diffusion-bas
 **Tab 1 — Enhance (Super Resolution)**  
 Uploads a low-quality or small image and runs it through Real-ESRGAN to produce a sharper, larger version. Supports 2x and 4x upscaling. A 512×512 photo becomes a clean 2048×2048 with genuine detail recovery, not just interpolation.
 
+![gradio interface](screenshots/enhance_ss.png)
+
 **Tab 2 — Outpaint (Extend Image)**  
 Extends the image canvas beyond its original borders in any direction — horizontally, vertically, or all four sides at once. The AI generates new content that matches the existing scene: same lighting, same color palette, same background. Uses BLIP to automatically read and describe the image so no manual prompt is needed.
+
+![gradio interface outpainting](screenshots/outpaint_ss.png) 
 
 The two features are intentionally separate. Enhancement makes images bigger and sharper. Outpainting makes images wider or taller with new content. They solve different problems.
 
