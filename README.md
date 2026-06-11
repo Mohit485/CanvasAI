@@ -40,8 +40,6 @@ For a 25% extension on a 512px image, that comes out to about 4 passes per side.
 
 BLIP automatically captions the image and that caption gets wrapped in scene-extension language: *"seamless continuation of a scene with [caption], same lighting, same background, same color palette"*. This guides SD to extend the environment rather than generate something entirely new.
 
-**The mask and feathering**
-
 The core mechanism behind seamless outpainting is the mask. SD inpainting uses a black-and-white image to decide what to generate:
 
 
@@ -139,10 +137,9 @@ The first run downloads ~6GB of models. Kaggle caches these between sessions in 
 
 The most interesting part was understanding why sequential outpainting produces better results than extending all borders at once. When you mask all four borders simultaneously, the model generates large amounts of new content with only the center as context — it has no way to make the top extension consistent with the bottom because both are being generated at the same time. Sequential passes give each region the previous result as context, so decisions stay consistent across the whole image.
 
-Mask feathering was another non-obvious detail. A hard binary mask creates a visible seam because the model generates content right up to the original's edge without blending. A soft transition zone where the model regenerates a thin strip of the original forces a gradual fade. Getting the feather width right is a balance — too small and the seam shows, too large and the original gets subtly altered in the blend zone.
 ---
 
-** Future Scope
+## Future Scope
 
 - Persistent result saving — currently the extended image lives only in the Gradio session
 - Multi-step preview — show the image updating after each pass instead of waiting for all passes to finish
