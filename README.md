@@ -28,18 +28,24 @@ The two features are intentionally separate. Enhancement makes images bigger and
 Real-ESRGAN uses a Residual-in-Residual Dense Block (RRDB) network trained on millions of image pairs to predict what high-frequency detail *should* be there in a blurry or compressed image. It processes the image in 512×512 tiles with overlap to prevent seams, then stitches them back together. The result is genuinely sharper than bicubic interpolation.
 
 **Outpainting pipeline:**  
-The process runs in sequential passes — one side at a time — rather than extending all borders simultaneously. Each pass:
+Most outpainting tools try to extend the entire border in one pass. The problem is that when you add a large empty region, Stable Diffusion has very little original image context to work with and starts hallucinating random content.
 
-1. Pads the current image with a black border on one side
-2. Creates a binary mask marking the new black area as "generate here"
-3. Adds a soft feather zone at the boundary so the new content blends into the original
-4. Resizes everything to 512×512 (the model's native resolution), runs Stable Diffusion inpainting, then resizes back
-5. Pastes the original pixels back to guarantee the kept area is pixel-perfect
-6. The result becomes the input for the next pass
+This tool takes a different approach — it extends the image in small steps of 64 pixels at a time, running SD inpainting on each step. Each pass only adds 64px of new content, which means SD sees roughly 88% original content and only 12% empty space to fill. With that much context, it understands the scene well and generates coherent continuations.
 
-Sequential passes work far better than all-at-once because each new pass has more context — extending the bottom first means extending the top has a full-height image to work with, not just the original.
+For a 25% extension on a 512px image, that comes out to about 4 passes per side.
 
 BLIP automatically captions the image and that caption gets wrapped in scene-extension language: *"seamless continuation of a scene with [caption], same lighting, same background, same color palette"*. This guides SD to extend the environment rather than generate something entirely new.
+
+** The mask and feathering
+
+The core mechanism behind seamless outpainting is the mask. SD inpainting uses a black-and-white image to decide what to generate:
+
+
+White = generate new content here
+Black = leave this alone, keep original
+
+
+A hard black/white boundary produces a visible seam line. To fix this, the mask edge is blurred using ImageFilter.GaussianBlur(radius=30) after drawing the protection rectangle. This turns the hard edge into a soft gradient — grey values at the boundary tell SD to blend the generated content into the original rather than cutting sharply.
 
 ---
 
@@ -48,7 +54,7 @@ BLIP automatically captions the image and that caption gets wrapped in scene-ext
 | Model | Purpose | Size |
 |---|---|---|
 | `RealESRGAN_x4plus` | Super resolution (4x upscaling) | ~64 MB |
-| `runwayml/stable-diffusion-inpainting` | Outpainting via masked inpainting | ~5 GB |
+| `sd2-community-stable-diffusion-2-inpainting` | Outpainting via masked inpainting | ~5 GB |
 | `Salesforce/blip-image-captioning-base` | Auto-prompt generation from image | ~900 MB |
 
 All models download automatically. Real-ESRGAN weights are fetched directly from GitHub releases. The other two come from Hugging Face.
@@ -130,7 +136,15 @@ The first run downloads ~6GB of models. Kaggle caches these between sessions in 
 The most interesting part was understanding why sequential outpainting produces better results than extending all borders at once. When you mask all four borders simultaneously, the model generates large amounts of new content with only the center as context — it has no way to make the top extension consistent with the bottom because both are being generated at the same time. Sequential passes give each region the previous result as context, so decisions stay consistent across the whole image.
 
 Mask feathering was another non-obvious detail. A hard binary mask creates a visible seam because the model generates content right up to the original's edge without blending. A soft transition zone where the model regenerates a thin strip of the original forces a gradual fade. Getting the feather width right is a balance — too small and the seam shows, too large and the original gets subtly altered in the blend zone.
+---
 
+** Future Scope
+
+- Persistent result saving — currently the extended image lives only in the Gradio session
+- Multi-step preview — show the image updating after each pass instead of waiting for all passes to finish
+- Aspect ratio presets (cinema 21:9, Instagram square, etc.) that auto-calculate the required extension
+- LoRA support for consistent style extension (useful for illustrated/artistic images)
+- Batch processing — run outpainting on multiple images in sequence
 ---
 
 ## Tech stack
