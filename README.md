@@ -3,7 +3,11 @@
 An AI-powered image enhancement and outpainting tool. Upload a photo, and CanvasAI either sharpens it to a higher resolution or extends its borders with coherent, AI-generated content that matches the original scene.
 
 Built as a personal project to explore super-resolution models and diffusion-based inpainting — two techniques that are increasingly relevant in professional creative and media workflows.
+## Kaggle Notebook
 
+View and run the complete project on Kaggle:
+
+🔗 [www.kaggle.com/CanvasAI-link](https://www.kaggle.com/code/mohiadiy/canvasai/edit)
 ---
 
 ## What it does
@@ -36,7 +40,7 @@ For a 25% extension on a 512px image, that comes out to about 4 passes per side.
 
 BLIP automatically captions the image and that caption gets wrapped in scene-extension language: *"seamless continuation of a scene with [caption], same lighting, same background, same color palette"*. This guides SD to extend the environment rather than generate something entirely new.
 
-** The mask and feathering
+**The mask and feathering**
 
 The core mechanism behind seamless outpainting is the mask. SD inpainting uses a black-and-white image to decide what to generate:
 
