@@ -1,0 +1,11 @@
+gradio
+torch
+diffusers
+transformers
+accelerate
+Pillow
+numpy
+basicsr
+facexlib
+gfpgan
+realesrgan@ git+https://github.com/xinntao/Real-ESRGAN.git
