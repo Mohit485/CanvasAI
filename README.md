@@ -3,7 +3,8 @@
 An AI-powered image enhancement and outpainting tool. Upload a photo, and CanvasAI either sharpens it to a higher resolution or extends its borders with coherent, AI-generated content that matches the original scene.
 
 Built as a personal project to explore super-resolution models and diffusion-based inpainting — two techniques that are increasingly relevant in professional creative and media workflows.
-## Kaggle Notebook
+
+##Live Demo → huggingface.co/spaces/Madiy/CanvasAI
 
 View and run the complete project on Kaggle:
 
@@ -76,37 +77,51 @@ Everything lives in one notebook. No separate frontend, no ngrok tunneling, no l
 
 ---
 
-## Setup and usage
+Run Locally
+Requirements
+Python 3.8+
+NVIDIA GPU with 8GB+ VRAM recommended (CPU works but SD inpainting will be very slow)
+Setup
+bash
+git clone https://github.com/Mohit485/CanvasAI
+cd CanvasAI
+pip install -r requirements.txt
+python app.py
+Requirements.txt
+gradio
+torch
+diffusers
+transformers
+accelerate
+Pillow
+numpy
+basicsr
+facexlib
+gfpgan
+realesrgan@ git+https://github.com/xinntao/Real-ESRGAN.git
 
-### Requirements
+On first run, the app downloads:
 
-- A free [Kaggle](https://kaggle.com) account
-- GPU enabled in notebook settings (Accelerator → GPU T4 x2)
+Real-ESRGAN weights (~64MB) — saved to weights/ folder
+SD Inpainting model (~5GB) — cached by HuggingFace
+BLIP model (~900MB) — cached by HuggingFace
+Run on Kaggle (Recommended for GPU)
+Create a new Kaggle notebook
+Set accelerator to GPU T4 x2 in notebook settings
+Copy the notebook cells from kaggle_notebook.ipynb
+Run all cells — Gradio provides a public gradio.live URL automatically
 
-No local GPU needed. No API keys. No paid services.
+No ngrok, no separate server setup. Gradio's share=True handles the public URL.
 
-### Running it
+Project Structure
+canvas-ai/
+│
+├── app.py                  # Main application — models, logic, Gradio UI
+├── requirements.txt        # Python dependencies
+├── kaggle_notebook.ipynb   # Kaggle version with cell-by-cell structure
+└── README.md
 
-1. Open [kaggle.com](https://kaggle.com) and create a new notebook
-2. In Settings (right sidebar), set Accelerator to **GPU T4 x2**
-3. Copy the notebook cells in order and run them top to bottom
-4. Cell 1 installs dependencies (~2 min)
-5. Cell 2 downloads weights and loads all models (~4 min first run, faster after)
-6. Cell 3 defines the enhancement function
-7. Cell 4 defines the outpainting functions
-8. Cell 5 builds the Gradio interface and launches it
-
-When Cell 5 runs, it prints a public URL:
-```
-Running on public URL: https://randomstring.gradio.live
-```
-
-Open that URL in any browser. The interface stays alive as long as the cell is running. The URL is valid for 72 hours.
-
-### First run vs subsequent runs
-
-The first run downloads ~6GB of models. Kaggle caches these between sessions in `/kaggle/working`, so subsequent runs skip the download and load models into GPU memory in about 3-4 minutes.
-
+The entire application is in app.py — no separate modules. Kept intentionally simple so the logic is easy to follow and modify.
 ---
 
 ## Usage tips
@@ -125,11 +140,11 @@ The first run downloads ~6GB of models. Kaggle caches these between sessions in 
 
 ## Known limitations
 
-- Outpainting results are non-deterministic — same input, different result each run. This is how diffusion models work, not a bug.
-- Complex scenes with people, faces, or strong perspective are harder to extend correctly. Simple backgrounds extend most cleanly.
-- The Gradio public URL changes every session — no permanent URL on the free tier.
-- Kaggle sessions expire after 12 hours. Reloading models takes 3-4 minutes.
-- Very large input images may cause out-of-memory errors even with CPU offloading. If this happens, resize the input before uploading.
+- Outpainting with "Both" direction at high percentages takes 3-5 minutes on ZeroGPU free tier
+- BLIP occasionally misreads complex or abstract images — use the custom prompt field to override
+- Very small input images (under 200px) may produce lower quality outpainting results
+- SD inpainting sometimes introduces slight style inconsistencies on heavily stylized images (illustrations, paintings)
+- The session gallery resets on page refresh — no persistent storage
 
 ---
 
