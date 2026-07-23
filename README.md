@@ -4,7 +4,7 @@ An AI-powered image enhancement and outpainting tool. Upload a photo, and Canvas
 
 Built as a personal project to explore super-resolution models and diffusion-based inpainting — two techniques that are increasingly relevant in professional creative and media workflows.
 
-##Live Demo → huggingface.co/spaces/Madiy/CanvasAI
+## Live Demo → [huggingface.co/spaces/Madiy/CanvasAI](https://huggingface.co/spaces/Madiy/CanvasAI)
 
 View and run the complete project on Kaggle:
 
