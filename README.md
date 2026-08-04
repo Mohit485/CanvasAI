@@ -17,10 +17,11 @@ View and run the complete project on Kaggle:
 **Tab 1 — Enhance (Super Resolution)**  
 Upload any image and run it through Real-ESRGAN to produce a sharper, larger version. Supports 2× and 4× upscaling. A 512×512 photo becomes a clean 2048×2048 with genuine detail recovery — not just interpolation.
 
-![Enhancement tab interface](screenshots/enhanci_ss.png)
+![Enhancement tab interface](screenshots/gy_enh.png)
 
 **Tab 2 — Colorize (B&W Photo Colorization)**  
 Upload a black and white photograph and get a naturally colorized version. Uses DDColor — a model trained specifically for colorization, not general image generation. Works at the pixel level: predicts a plausible color for each pixel without altering structure or composition. Post-processed with LAB color space smoothing and saturation correction. No text prompt needed — fully automatic.
+![Colourize tab interface](screenshots/meen_co.png)
 
 **Tab 3 — Outpaint (Extend Image)**  
 Extends the image canvas beyond its original borders in any direction — horizontally, vertically, or all four sides. The AI generates new content that matches the existing scene: same lighting, same color palette, same background. BLIP automatically reads and describes the image so no manual prompt is needed.
