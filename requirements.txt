@@ -1,11 +1,16 @@
 gradio
-torch
 diffusers
 transformers
 accelerate
 Pillow
 numpy
+opencv-python
 basicsr
 facexlib
 gfpgan
 realesrgan@ git+https://github.com/xinntao/Real-ESRGAN.git
+modelscope
+spaces
+simplejson
+sortedcontainers
+timm
