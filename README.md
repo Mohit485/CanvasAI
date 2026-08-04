@@ -263,7 +263,7 @@ On first run downloads: Real-ESRGAN weights (~64MB), SD2 inpainting (~5GB), BLIP
 - Each pass takes ~20 seconds on T4 GPU; Both direction at 25% = ~8 passes = ~3 minutes
 
 ---
-
+ 
 ## Known limitations
 
 **Enhancement** does not deblur. Super resolution and deblurring are fundamentally different tasks requiring different models. Blurry input produces larger blurry output.
