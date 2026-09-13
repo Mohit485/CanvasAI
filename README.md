@@ -6,6 +6,11 @@
 [![Kaggle](https://img.shields.io/badge/Kaggle-Notebook-blue?logo=kaggle)](https://www.kaggle.com/code/mohiadiy/canvasai)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
+<div align="center">
+  <img src="assets/demo_preview.gif" alt="3D-FY Demo Preview" width="100%">
+</div>
+
+
 ---
 
 ## 📖 The Story Behind CanvasAI
@@ -32,17 +37,28 @@ Revitalize vintage black-and-white photography using **FLUX.1-Kontext** coupled 
 * **Precision Padding**: Automatically calculates target dimensions snapped to multiples of 16 to prevent internal pipeline center-cropping and distortion.
 * **Strength Blending**: Features an adjustable alpha-blending slider that smoothly mixes predicted color back into the original greyscale luminance structure, preserving historical detail while adding natural warmth.
 
+<div align="center">
+<img src="ss/color_gr.png" alt="3D-FY Demo Preview" width="50%">
+</div>
+
 ### 🖼️ 2. Single-Pass Outpainting Engine
 Expand image boundaries horizontally, vertically, or symmetrically using **FLUX.1-Fill-dev NF4**.
 * **Direct Single-Pass Generation**: Eliminates multi-pass edge artifacts by expanding the full target resolution in a single, coherent inference call.
 * **Context-Aware Style Detection**: Analyzes scene saturation dynamically—automatically appending monochrome, sepia, or vivid photorealistic prompt directives to match incoming lighting.
 * **Soft Boundary Feathering**: Applies a 16px Gaussian blurred protection mask to create smooth seam integration between existing original pixels and newly synthesized canvas extensions.
 
+<div align="center">
+<img src="ss/out_gr.png" alt="3D-FY Demo Preview" width="50%">
+</div>
+
 ### ✨ 3. Super Resolution & Sharpening
 Upscale low-resolution inputs by **2× or 4×** using **Real-ESRGAN (x4plus)**.
 * Reconstructs sharp, high-frequency spatial details and textures using a Residual-in-Residual Dense Block (RRDBNet) architecture rather than simple pixel interpolation.
 * Configured with tiling execution to eliminate GPU memory overhead on large canvas sizes.
 
+<div align="center">
+  <img src="ss/enh_gr.png" alt="3D-FY Demo Preview" width="50%">
+</div>
 ---
 
 ## ⚙️ Architecture & Data Pipelines
